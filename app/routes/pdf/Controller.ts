@@ -4,6 +4,8 @@
 module app.routes.pdf {
 	'use strict';
 
+	declare var Chart;
+	
 	export interface Scope extends ng.IScope {
 		render(): void;
 	}
@@ -22,23 +24,26 @@ module app.routes.pdf {
 			'app.services.IPDFService'
 		];
 
-		
 		private file: components.IFile;
-		
+
 		constructor(
-			private $scope: Scope,
+			private $scope: any,
 			private $location: ng.ILocationService,
 			private $translate: ng.translate.ITranslateService,
 			businessService: app.services.IBusinessService,
 			headerService: app.services.IHeaderService,
 			pdfService: app.services.IPDFService) {
-			
+
 			headerService.title = "PDF";
 			this.file = businessService.file();
+			
+
 			var doc = pdfService.createPDF(this.file);
+			
 			var ele = angular.element(document.getElementById("preview"));
-			var data = doc.output('datauristring');
-			ele.attr('src', data);	
+			var data = doc.output('bloburi');
+			console.log(data);
+			ele.attr('src', data);
 		}
 	}
 }

@@ -22,11 +22,12 @@
     "angular-route": "~1.4.8",
     "angular-sortable-view": "~0.0.13",
     "angular-translate": "~2.8.1",
-    "angular-aria": "~1.4.8"
+    "angular-aria": "~1.4.8",
+    "jquery": "jQuery#~2.1.4"
   },
   "overrides": {
-        "Chart.js": {
-            "main":"dont"
-        }
+    "Chart.js": {
+      "main": "dont"
     }
+  }
 }

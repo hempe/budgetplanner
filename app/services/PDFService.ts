@@ -2,6 +2,8 @@
 /// <reference path='../_all.ts' />
 
 declare var jsPDF;
+declare var Chart;
+
 
 module app.services {
     'use strict';
@@ -19,14 +21,56 @@ module app.services {
 		private totalPagesExp = "{total_pages_count_string}";
 		private pagecount: number = 0;
 
-		constructor(private $translate:ng.translate.ITranslateService){
-			
-		}
+
+		private options = {
+			animation: false,
+			scaleBeginAtZero: false,
+			responsive: false,
+			legendShowLabels: true,
+			scaleGridLineColor: "rgba(66,66,66,0.1)",
+			scaleLineColor: "rgba(66,66,66,0.8)",
+			scaleFontColor: "rgba(66,66,66,0.8)",
+			//barDatasetSpacing: 50,
+			//barValueSpacing: 50,
+			scaleLabel: (valuePayload) => Number(valuePayload.value).formatMoney(0),
+		};
 		
+		private optionsDevelopment = {
+			animation: false,
+			scaleBeginAtZero: false,
+			responsive: false,
+			legendShowLabels: true,
+			scaleGridLineColor: "rgba(66,66,66,0.1)",
+			scaleLineColor: "rgba(66,66,66,0.8)",
+			scaleFontColor: "rgba(66,66,66,0.8)",
+			scaleLabel: (valuePayload) => Number(valuePayload.value).formatMoney(0),
+		};
+		
+		
+
+		private colors = [
+			{
+				fillColor: "rgba(33,66,99,.5)",
+				strokeColor: "rgba(0,0,0,0)",
+			},
+			{
+				fillColor: "rgba(255,153,0,1)",
+				strokeColor: "rgba(0,0,0,0)",
+			},
+			{
+				fillColor: "rgba(16,153,24,1)",
+				strokeColor: "rgba(0,0,0,0)",
+			},
+		];
+
+		constructor(private $translate: ng.translate.ITranslateService) {
+
+		}
+
 		public createPDF(file: components.IFile): any {
 			this.pagecount = 0;
 			var doc = new jsPDF('portrait', 'pt', 'a4')
-			doc.setFont('Raleway');
+			//doc.setFont('Raleway');
 			var pageHeight = doc.internal.pageSize.height;
 
 
@@ -37,36 +81,36 @@ module app.services {
 				[this.$translate.instant('DEBTS'), file.assets.negativ.Total().formatMoney()],
 				(element: components.IAsset) => [element.name, element.value.formatMoney()]
 			)
+			
+						this.tableGroup(doc, file.revenue,
+							this.$translate.instant('ONE_TIME_REVENUE_AND_EXPENDITURE').replace("&amp;","&"),
+							[this.$translate.instant('REVENUE'), "", file.revenue.positiv.Total().formatMoney()],
+							this.$translate.instant('ONE_TIME_REVENUE_AND_EXPENDITURE').replace("&amp;","&"),
+							[this.$translate.instant('EXPENDITURE'), "", file.revenue.negativ.Total().formatMoney()],
+							(element: components.IRevenue) => [element.name, element.year, element.value.formatMoney()]
+						)
+						var translate = this.$translate(app.components.frequencies[0].name);
+						
+						file.budgets.forEach(budget=> {
+							this.tableGroup(doc, budget,
+								budget.name,
+								[this.$translate.instant('INCOME'), "", "", budget.positiv.Total().formatMoney()],
+								budget.name,
+								[this.$translate.instant('EXPENSES'), "", "", budget.negativ.Total().formatMoney()],
+								(element: components.IBudget) => [
+									element.name,
+									this.$translate.instant(app.components.frequencies[element.frequency].name),
+									element.value.formatMoney(),
+									element.Total().formatMoney()
+								]);
+						});
+			
 
-			this.tableGroup(doc, file.revenue,
-				this.$translate.instant('ONE_TIME_REVENUE_AND_EXPENDITURE').replace("&amp;","&"),
-				[this.$translate.instant('REVENUE'), "", file.revenue.positiv.Total().formatMoney()],
-				this.$translate.instant('ONE_TIME_REVENUE_AND_EXPENDITURE').replace("&amp;","&"),
-				[this.$translate.instant('EXPENDITURE'), "", file.revenue.negativ.Total().formatMoney()],
-				(element: components.IRevenue) => [element.name, element.year, element.value.formatMoney()]
-			)
-			var translate = this.$translate(app.components.frequencies[0].name);
-			
-			file.budgets.forEach(budget=> {
-				//doc.addPage();
-				this.tableGroup(doc, budget,
-					budget.name,
-					[this.$translate.instant('INCOME'), "", "", budget.positiv.Total().formatMoney()],
-					budget.name,
-					[this.$translate.instant('EXPENSES'), "", "", budget.negativ.Total().formatMoney()],
-					(element: components.IBudget) => [
-						element.name,
-						this.$translate.instant(app.components.frequencies[element.frequency].name),
-						element.value.formatMoney(),
-						element.Total().formatMoney()
-					]);
-			});
 
-			
-			
-			this.development(doc,file);
-			
+			this.development(doc, file);
+
 			this.putTotalPages(doc);
+			/*
 			doc.setPage(1);
 			
 			
@@ -78,63 +122,96 @@ module app.services {
 			
 			doc.setTextColor(0);
 			this.client(doc,file.client);
+			*/
 			return doc;
 		}
-		
-		private client(doc, client:components.IClient){
-			
-			var i = 1;
-			
-			doc.setFontSize(this.fontHeight * 1.2);
-			this.clientRow(doc, client.company, i++);
-			
-			doc.setFontSize(this.fontHeight * 1.5);
-			this.clientRow(doc, client.name + " "+ client.prename, i++);
-			
-			doc.setFontSize(this.fontHeight * 1.2);
-			i++;
-			this.clientRow(doc, client.street, i++);
-			this.clientRow(doc, client.zipCode+ " " +client.city, i++);
-			
-			
-			i++;
-			
-			this.clientRow(doc, client.eMail,  i++);
-			this.clientRow(doc,client.telNumber, i++); 
-			this.clientRow(doc, client.mobilNumber, i++);
-			
-			i++;
-			
-			this.clientRow(doc,	client.comment, i++);
+
+
+		private toDataset(chartData: any) {
+			var cd: any = {};
+			cd.labels = chartData.labels;
+			cd.datasets = [];
+			chartData.series.forEach((s, i) => {
+				cd.datasets.push(
+					{
+						label: s,
+						data: chartData.data[i],
+						fillColor: this.colors[i].fillColor,
+						strokeColor: this.colors[i].strokeColor,
+					}
+				);
+			});
+			return cd;
 		}
-		
+		private client(doc, client: components.IClient) {
+
+			var i = 1;
+
+			if (client.company) {
+				doc.setFontSize(this.fontHeight * 1.2);
+				this.clientRow(doc, client.company, i++);
+			}
+
+			doc.setFontSize(this.fontHeight * 1.5);
+			this.clientRow(doc, client.name + " " + client.prename, i++);
+
+			doc.setFontSize(this.fontHeight * 1.2);
+			i++;
+
+			if (client.street) this.clientRow(doc, client.street, i++);
+
+			this.clientRow(doc, client.zipCode + " " + client.city, i++);
+
+
+			i++;
+			if (client.eMail) this.clientRow(doc, client.eMail, i++);
+			if (client.telNumber) this.clientRow(doc, client.telNumber, i++);
+			if (client.mobilNumber) this.clientRow(doc, client.mobilNumber, i++);
+
+			i++;
+
+			if (client.comment) this.clientRow(doc, client.comment, i++);
+		}
+
 		private development(doc, file): void {
-			var dv =  new routes.development.DevelopmentChartFactory(file);
+
+			var dv = new routes.development.DevelopmentChartFactory(file);
+
 			var d = dv.budgetTotals();
 			console.log(d);
 			var headerText = "Vermögensentwicklung";
-			
+
 			var self = this;
 			var rows = [];
-			var columns = ["Jahr (Budget)", "", "" , "Restvermögen"];
-			
+			var columns = ["Jahr (Budget)", "", "", "Restvermögen"];
+
 			var index = 0;
-			
+
 			d.labels.forEach((l, i) => {
 				rows.push([
 					l,
 					d.data[0][i].formatMoney(),
-					d.data[1][i] == 0 ? "": d.data[1][i].formatMoney(),
+					d.data[1][i] == 0 ? "" : d.data[1][i].formatMoney(),
 					d.data[2][i].formatMoney(),
-					]);
+				]);
 			})
 
 			var last = 0;
+
+
+			var imgData = new Chart((<any>document.getElementById('canvas')).getContext('2d')).Bar(this.toDataset(dv.budgetTotals()), this.optionsDevelopment).toBase64Image();
+			doc.addImage(imgData, 'PNG',
+				this.marginLeft,
+				this.marginTop + this.rowHeight * 2,
+				doc.internal.pageSize.width - this.marginLeft * 2,
+				(doc.internal.pageSize.width - this.marginLeft * 2) / 2);
+
 			doc.autoTable(columns, rows,
+
 				{
-					startY: this.marginTop,
+					startY: (doc.internal.pageSize.width - this.marginLeft * 2) / 2 + this.marginTop + this.rowHeight * 2.5,
 					rowHeight: this.rowHeight,
-					margin: { top: this.marginTop + this.rowHeight * 2, left: this.marginLeft, right: this.marginLeft, bottom: this.marginTop + this.rowHeight * 1.5  },
+					margin: { top: this.marginTop + this.rowHeight * 2, left: this.marginLeft, right: this.marginLeft, bottom: this.marginTop + this.rowHeight * 1.5 },
 					createdHeaderCell: function(cell, data) {
 						cell.styles.halign = 'right';
 					},
@@ -142,9 +219,11 @@ module app.services {
 						if (data.column.dataKey == 0)
 							cell.textPos.x = cell.x + cell.contentWidth - 5;
 					},
-					beforePageContent: (d) => this.header(doc, d, headerText),
+					beforePageContent: (d) => {
+						this.header(doc, d, headerText);
+					},
 					afterPageContent: (d) => this.footer(doc, d),
-					pageBreak: 'always',
+
 					styles: {
 						fillStyle: 'DF',
 						lineColor: 88,
@@ -175,9 +254,9 @@ module app.services {
 				}
 			);
 		}
-		
-		private clientRow(doc, value, row){
-			doc.text(value, this.marginLeft, this.marginTop*5 + this.rowHeight*(row+1)*1.4);
+
+		private clientRow(doc, value, row) {
+			doc.text(value, this.marginLeft, this.marginTop * 5 + this.rowHeight * (row + 1) * 1.4);
 		}
 
 		private putTotalPages(doc) {
@@ -186,7 +265,6 @@ module app.services {
 		}
 
 		private header(doc, data, text): void {
-			//erster aufruf aus table für table of content?
 			doc.setTextColor(33, 66, 99);
 			doc.setFontSize(this.fontHeight * 1.4);
 			doc.text(text, this.marginLeft, this.marginTop + this.rowHeight);
@@ -196,9 +274,9 @@ module app.services {
 			this.pagecount++;
 			doc.setTextColor(0);
 			doc.setFontSize(this.fontHeight * 0.8);
-			var str = this.$translate.instant('PAGE')+" " + this.pagecount;
+			var str = this.$translate.instant('PAGE') + " " + this.pagecount;
 			if (typeof doc.putTotalPages === 'function') {
-				str = str + " "+this.$translate.instant('PAGE_OFF')+" " + this.totalPagesExp;
+				str = str + " " + this.$translate.instant('PAGE_OFF') + " " + this.totalPagesExp;
 			}
 			doc.text(str, data.settings.margin.left, doc.internal.pageSize.height - this.marginTop);
 		}
@@ -220,6 +298,8 @@ module app.services {
 		}
 
 		private table(doc, unit, headerText, columns, elementfunc): void {
+			var oldpage = this.pagecount;
+
 			var self = this;
 			var rows = [];
 			var index = 0;
@@ -231,12 +311,29 @@ module app.services {
 				})
 			})
 
+			var chartData = new directives.ChartData();
+			chartData.data.push([]);
+			chartData.series.push("");
+
+			unit.forEach((u) => {
+				chartData.labels.push(u.name);
+				chartData.data[0].push(u.Total());
+			});
+
+
+			var imgData = new Chart((<any>document.getElementById('canvas')).getContext('2d')).Bar(this.toDataset(chartData), this.options).toBase64Image();
+			doc.addImage(imgData, 'PNG',
+				this.marginLeft,
+				this.marginTop + this.rowHeight * 2,
+				doc.internal.pageSize.width - this.marginLeft * 2,
+				(doc.internal.pageSize.width - this.marginLeft * 2) / 2);
+
 			var last = 0;
 			doc.autoTable(columns, rows,
 				{
-					startY: this.marginTop,
+					startY: (doc.internal.pageSize.width - this.marginLeft * 2) / 2 + this.marginTop + this.rowHeight * 2.5,
 					rowHeight: this.rowHeight,
-					margin: { top: this.marginTop + this.rowHeight * 2, left: this.marginLeft, right: this.marginLeft, bottom: this.marginTop + this.rowHeight * 1.5  },
+					margin: { top: this.marginTop + this.rowHeight * 2, left: this.marginLeft, right: this.marginLeft, bottom: this.marginTop + this.rowHeight * 1.5 },
 					drawRow: function(row, data) {
 						self.subLabel(doc, row, data);
 					},
@@ -247,9 +344,9 @@ module app.services {
 						if (data.column.dataKey == 0)
 							cell.textPos.x = cell.x + cell.contentWidth - 5;
 					},
-					beforePageContent: (d) => this.header(doc, d, headerText),
+					beforePageContent: (d) => { this.header(doc, d, headerText); },
 					afterPageContent: (d) => this.footer(doc, d),
-					pageBreak: 'always',
+
 					styles: {
 						fillStyle: 'DF',
 						lineColor: 88,
@@ -279,6 +376,8 @@ module app.services {
 					}
 				}
 			);
+
+			doc.addPage();
 		}
 		private tableGroup(doc,
 			group: components.Group<any>,

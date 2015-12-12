@@ -1,0 +1,32 @@
+{
+  "name": "budget-planner",
+  "description": "",
+  "main": "gulpfile.js",
+  "license": "ISC",
+  "moduleType": [],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.8",
+    "angular-animate": "~1.4.8",
+    "angular-chart.js": "~0.8.8",
+    "angular-material": "http://github.com/angular/bower-material/tarball/master",
+    "angular-material-icons": "~0.6.0",
+    "angular-route": "~1.4.8",
+    "angular-sortable-view": "~0.0.13",
+    "angular-translate": "~2.8.1",
+    "angular-aria": "~1.4.8"
+  },
+  "overrides": {
+        "Chart.js": {
+            "main":"dont"
+        }
+    }
+}

@@ -1,0 +1,43 @@
+<div style="max-width:1200px;margin:auto;">
+	
+	<md-card>
+	<div>
+		<md-card-content>
+			<div class="md-toolbar-tools">
+				<span translate flex>ASSETS</span>
+				<span style="color:#333">
+                      {{( current.positiv.Total() - current.negativ.Total() ).formatMoney() }}
+				</span>
+				<div>
+					<ng-md-icon ng-if="current.negativ.Total() < current.positiv.Total()" class="header-icon rotate_90Degres" icon="arrow_back" style="fill:#009688" size=50></ng-md-icon>
+					<ng-md-icon ng-if="current.negativ.Total() == current.positiv.Total()" class="header-icon" icon="vertical_align_center" style="fill:#666" size=50></ng-md-icon>
+					<ng-md-icon ng-if="current.negativ.Total() > current.positiv.Total()" class="header-icon rotate_90Degres" icon="arrow_forward" style="fill:#f06292" size=50></ng-md-icon>
+				</div>
+			</div>
+		</md-card-content>
+		<div style="background-color:#f2f2f2;border-top:1px solid #ebebeb;" layout="row">
+			<md-tabs flex md-selected="index">
+				<md-tab  ng-click="goto('assets')">
+					<span translate="ASSETS_AND_DEBTS"></span>
+				</md-tab>
+				<md-tab  ng-click="goto('revenue')">
+					<span translate="ONE_TIME_REVENUE_AND_EXPENDITURE"></span>
+				</md-tab>
+			</md-tabs>
+		</div>
+	</div>
+</md-card>
+
+	<div layout-gt-xs="row" ng-if="assets">
+		<bp-unit-card name="'ASSETS_D2' | translate" color="blue" unit-name="positiv" unit-type="{{type}}"
+		flex-gt-xs></bp-unit-card>
+		<bp-unit-card name="'DEBTS' | translate" color="yellow" unit-name="negativ" unit-type="{{type}}"
+		flex-gt-xs></bp-unit-card>
+	</div>
+	<div layout-gt-xs="row" ng-if="oneTime">
+		<bp-unit-card name="'REVENUE' | translate" color="blue" unit-name="positiv" unit-type="{{type}}"
+		flex-gt-xs></bp-unit-card>
+		<bp-unit-card name="'EXPENDITURE' | translate" color="yellow" unit-name="negativ" unit-type="{{type}}"
+		flex-gt-xs></bp-unit-card>
+	</div>
+</div>

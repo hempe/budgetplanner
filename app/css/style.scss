@@ -1,0 +1,128 @@
+.chartjs-tooltip {
+     opacity: 0;
+     position: absolute;
+     background: white;
+     color: #333;
+	 padding: 15px;
+     border-radius: 5px;
+     border: 1px solid #ccc;
+	 box-shadow: 0px 0px 2px #aaa;
+	 transition: all .1s ease;
+     pointer-events: none;
+     transform: translate(-50%, 0);
+ }
+.tooltip-label{
+	color:#666;
+}
+.tooltip-value{
+	font-weight: bolder;
+	text-align: right;
+}
+.tooltip-title{
+	font-size: 1.5em;
+	color: #333;
+}
+body{
+	font-size: 100% !important;
+	height: 100vh;
+	overflow: hidden;
+	background-color: #fafafa;
+}
+.page{
+	height: calc(100% - 4em);
+	margin-top: 4em;
+}
+.main-toolbar{
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+}
+.hide-border{
+    outline: none;
+    border: none;
+    background-color: transparent;
+}
+
+.ng-md-menu-icon{
+    position:absolute;top:.1em;
+}
+
+.md-icon-small-menu-indent > span{
+    margin-top: -.3em !important;
+    margin-left: .4em;
+    position: absolute;
+}
+.md-icon-menu-indent{
+    position: relative;
+}
+
+.page{
+    background-color: transparent;
+}
+
+.header-menu-icon{
+	    margin-top: 3px !important;
+}
+.header-icon{
+	display: inline !important;
+	
+}
+.rotate_90Degres>svg{
+	  transform: rotate(90deg);
+}
+
+.list-item {
+	height:2.5em;
+	div{
+		width:calc(100% - 48px);
+	}
+}
+.list-item > bp-element-menu > md-menu{
+	margin-top: -.5em;
+}
+
+$yellow-light: #f1bf26;
+$yellow-dark: #e5a228;
+
+$green-light: #95df54;
+$green-dark: #6abd20;
+
+$red-light: #f1672c;
+$red-dark: #e55126;
+
+$blue-light: #30a9dc;
+$blue-dark: #0c73b8;
+
+
+.budget-card-outer-yellow{
+	background-color: $yellow-light;
+}
+.budget-card-inner-yellow{
+	background-color: $yellow-dark;
+}
+
+.budget-card-outer-green{
+	background-color: $green-light;
+	/*background-color: #009688;*/
+}
+.budget-card-inner-green{
+	background-color: $green-dark;
+	/*background-color: #00796b;*/ 
+}
+
+.budget-card-outer-red{
+	background-color: $red-light;
+	/*background-color: #f06292;*/
+}
+.budget-card-inner-red{
+	background-color: $red-dark;
+	/*background-color: #c2185b;*/
+}
+
+.budget-card-outer-blue{
+	background-color: $blue-light;
+}
+.budget-card-inner-blue{
+	background-color: $blue-dark;
+}

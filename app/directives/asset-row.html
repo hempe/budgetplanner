@@ -1,0 +1,5 @@
+<div layout="row">
+	<input placeholder="Name" class="hide-border" ng-model="element.name" type="text" flex=50 ng-style="{ color: element.frequency == 00 ? 'grey' : 'initial' }"
+	ng-model-options="{ updateOn: 'blur' }">
+	<bp-money-input placeholder="0.00" class="hide-border" bp-model="element.value" flex=50 style="text-align:right;" ng-style="{ color: element.frequency == 00 ? 'grey' : 'initial' }">
+</div>

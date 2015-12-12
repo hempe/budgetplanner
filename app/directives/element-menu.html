@@ -1,0 +1,25 @@
+<md-menu md-position-mode="target-right target" flex=5>
+	<md-button aria-label="delete menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+		<ng-md-icon icon="more_vert" style="fill:grey;"></ng-md-icon>
+	</md-button>
+	<md-menu-content width="3">
+		<md-menu-item>
+			<md-button ng-click="removeElement(element);" class="md-icon-small-menu-indent">
+				<ng-md-icon icon="delete" style="fill:grey;"></ng-md-icon>
+				<span translate>DELETE</span>
+			</md-button>
+		</md-menu-item>
+		<md-menu-item>
+			<md-button ng-click="moveElementUp(element);" class="md-icon-small-menu-indent">
+				<ng-md-icon icon="keyboard_arrow_up" style="fill:grey;"></ng-md-icon>
+				<span translate>MOVE_UP</span>
+			</md-button>
+		</md-menu-item>
+		<md-menu-item>
+			<md-button ng-click="moveElementDown(element);" class="md-icon-small-menu-indent">
+				<ng-md-icon icon="keyboard_arrow_down" style="fill:grey;"></ng-md-icon>
+				<span translate>MOVE_DOWN</span>
+			</md-button>
+		</md-menu-item>
+	</md-menu-content>
+</md-menu>

@@ -1,0 +1,8 @@
+<div layout="row">
+	<input placeholder="Name" class="hide-border" ng-model="element.name" type="text" flex=50 ng-style="{ color: element.frequency == 00 ? 'grey' : 'initial' }"
+	ng-model-options="{ updateOn: 'blur' }">
+	<select class="hide-border" ng-model="element.frequency" ng-options="frequency.value as frequency.name | translate for frequency in frequencies"
+	flex=30 ng-style="{ color: element.frequency == 00 ? 'grey' : 'initial' }" style="text-align:right">
+	</select>
+	<bp-money-input placeholder="0.00" class="hide-border" bp-model="element.value" flex=20 style="text-align:right;" ng-style="{ color: element.frequency == 00 ? 'grey' : 'initial' }">
+</div></div>

@@ -1,0 +1,1 @@
+window.onload = function () { loaded(document.getElementById("webview")); }

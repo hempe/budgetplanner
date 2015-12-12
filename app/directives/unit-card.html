@@ -1,0 +1,178 @@
+<div>
+
+  <md-card style="margin-bottom:1em;color:white;">
+
+    <div style="width:100%" ng-class="outerColor">
+      <div style="margin:20px">
+      <bp-chart-wrapper chart-type="Bar" create-data="createData" watch="units"></bp-chart-wrapper>
+      </div>
+    </div>
+    <md-card-content ng-class="innerColor">
+      <div class="md-toolbar-tools">
+        <div layout="row" style="width:calc(100% - 48px);">
+          <strong flex>{{name}}</strong>
+          <strong style="text-align:right;" flex>{{units.Total().formatMoney()}}</strong>
+        </div>
+        <md-button aria-label="add menu" class="md-icon-button" ng-click="addUnit()">
+          <md-tooltip md-direction="bottom">
+            <span translate>ADD_NEW_GROUP</span>
+          </md-tooltip>
+          <ng-md-icon icon="add_box" style="fill:white;"></ng-md-icon>
+        </md-button>
+      </div>
+    </md-card-content>
+  </md-card>
+
+  <md-card sv-root>
+    <div ng-repeat="unit in units" style="padding:0em 1.7em;">
+
+      <md-list>
+        <md-list-item>
+          <div layout="row" style="width:calc(100% - 48px);">
+            <input style="width:100%" placeholder="Name" class="hide-border" ng-model="unit.name" 
+            ng-model-options="{ updateOn: 'blur' }">
+            <strong style="text-align:right;">{{unit.Total().formatMoney()}}</strong>
+          </div>
+          
+          <md-menu md-position-mode="target-right target" flex=5>
+
+            <md-button aria-label="delete menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+              <ng-md-icon icon="more_vert" style="fill:grey;"></ng-md-icon>
+            </md-button>
+
+            <md-menu-content width="4">
+
+              <md-menu-item>
+                <md-button ng-click="removeUnit(unit);" class="md-icon-small-menu-indent">
+                  <ng-md-icon icon="delete" style="fill:grey;"></ng-md-icon>
+                  <span translate>DELETE</span>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button ng-click="units.up(unit);" class="md-icon-small-menu-indent">
+                  <ng-md-icon icon="keyboard_arrow_up" style="fill:grey;"></ng-md-icon>
+                  <span translate>MOVE_UP</span>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button ng-click="units.down(unit);" class="md-icon-small-menu-indent">
+                  <ng-md-icon icon="keyboard_arrow_down" style="fill:grey;"></ng-md-icon>
+                  <span translate>MOVE_DOWN</span>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button ng-click="addElement(unit);" class="md-icon-small-menu-indent">
+                  <ng-md-icon icon="add" style="fill:grey;"></ng-md-icon>
+                  <span translate>ADD_ELEMENT</span>
+                </md-button>
+              </md-menu-item>
+            </md-menu-content>
+
+          </md-menu>
+        </md-list-item>
+        <md-divider></md-divider>
+        <div sv-part="unit.elements">
+          <div ng-if="unit.elements.length != 0" ng-repeat="element in unit.elements" layout="row" class="list-item" sv-element>
+            <bp-budget-row ng-if="unitType == 'budgets'" element="element"></bp-budget-row>
+            <bp-asset-row ng-if="unitType == 'assets'" element="element"></bp-asset-row>
+            <bp-revenue-row ng-if="unitType == 'revenue'" element="element"></bp-revenue-row>
+            <bp-element-menu unit="unit" element="element" flex=5></bp-element-menu>
+          </div>
+        </div>
+      </md-list>
+    </div>
+  </md-card>
+  <div>
+    
+    <!--
+      <div>
+
+  <md-card style="margin-bottom:1em;color:white;">
+
+    <bp-chart-wrapper style="padding-top:1.5em;padding-left:1em" ng-class="outerColor" chart-type="ColumnChart" head-row="headRow"
+    create-data="createData" watch="units">
+    </bp-chart-wrapper>
+    <md-card-content ng-class="innerColor">
+      <div class="md-toolbar-tools">
+        <div layout="row" style="width:calc(100% - 48px);">
+          <strong flex>{{name}}</strong>
+          <strong style="text-align:right;" flex>{{units().Total().formatMoney()}}</strong>
+        </div>
+        <md-button aria-label="add menu" class="md-icon-button" ng-click="addUnit()">
+          <md-tooltip md-direction="bottom">
+            <span translate>ADD_NEW_GROUP</span>
+          </md-tooltip>
+          <ng-md-icon icon="add_box" style="fill:white;"></ng-md-icon>
+        </md-button>
+      </div>
+    </md-card-content>
+  </md-card>
+
+  <md-card sv-root>
+    <div ng-repeat="unit in units()" style="padding:0em 1.7em;">
+
+      <md-list>
+        <md-list-item>
+          <div layout="row" style="width:calc(100% - 48px);">
+            <input style="width:100%" placeholder="Name" class="hide-border" ng-model="unit.name" 
+            ng-model-options="{ updateOn: 'blur' }">
+            <strong style="text-align:right;">{{unit.Total().formatMoney()}}</strong>
+          </div>
+          
+          <md-menu md-position-mode="target-right target" flex=5>
+
+            <md-button aria-label="delete menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+              <ng-md-icon icon="more_vert" style="fill:grey;"></ng-md-icon>
+            </md-button>
+
+            <md-menu-content width="4">
+
+              <md-menu-item>
+                <md-button ng-click="removeUnit(unit);" class="md-icon-small-menu-indent">
+                  <ng-md-icon icon="delete" style="fill:grey;"></ng-md-icon>
+                  <span>L&ouml;schen</span>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button ng-click="units().Up(unit);" class="md-icon-small-menu-indent">
+                  <ng-md-icon icon="keyboard_arrow_up" style="fill:grey;"></ng-md-icon>
+                  <span>Nach oben</span>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button ng-click="units().Down(unit);" class="md-icon-small-menu-indent">
+                  <ng-md-icon icon="keyboard_arrow_down" style="fill:grey;"></ng-md-icon>
+                  <span>Nach unten</span>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button ng-click="addElement(unit);" class="md-icon-small-menu-indent">
+                  <ng-md-icon icon="add" style="fill:grey;"></ng-md-icon>
+                  <span>Neues Element hinzuf&uuml;gen</span>
+                </md-button>
+              </md-menu-item>
+            </md-menu-content>
+
+          </md-menu>
+        </md-list-item>
+        <md-divider></md-divider>
+        <div  sv-part="unit.elements">
+          <div ng-if="unit.elements.length != 0" ng-repeat="element in unit.elements" layout="row" class="list-item" sv-element>
+            <div layout="row">
+              <input placeholder="Name" class="hide-border" ng-model="element.name" type="text" flex=50 ng-style="{ color: element.frequency == 00 ? 'grey' : 'initial' }"
+              ng-model-options="{ updateOn: 'blur' }">
+              <select class="hide-border" ng-model="element.frequency" ng-options="frequency.value as frequency.name | translate for frequency in frequencies"
+              flex=30 ng-style="{ color: element.frequency == 00 ? 'grey' : 'initial' }" style="text-align:right">
+              </select>
+              <bp-money-input placeholder="0.00" class="hide-border" bp-model="element.value" 
+               flex=20 style="text-align:right;" ng-style="{ color: element.frequency == 00 ? 'grey' : 'initial' }">
+            </div>
+            <bp-element-menu units="units" unit="unit" element="element" flex=5></bp-element-menu>
+          </div>
+        </div>
+      </md-list>
+    </div>
+  </md-card>
+  <div>
+      
+    -->

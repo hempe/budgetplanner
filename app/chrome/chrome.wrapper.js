@@ -34,8 +34,15 @@ document.addEventListener('DOMContentLoaded', function () {
       {
         id: "webview",
       }, function (container) {
+        console.log("data? %o",data);
+         
+        var blob = new Blob( [ data ], { type: "application/pdf" } );
+        var urlCreator = window.URL || window.webkitURL;
+        var uri = urlCreator.createObjectURL( blob );
+        debugger;
+ 
         container.contentWindow.loaded = function (view) {
-          view.setAttribute('src', data);
+          view.setAttribute('src', uri);
           success();
         }
       });

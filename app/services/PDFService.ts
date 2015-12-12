@@ -54,11 +54,11 @@ module app.services {
 				strokeColor: "rgba(0,0,0,0)",
 			},
 			{
-				fillColor: "rgba(255,153,0,1)",
+				fillColor: "rgba(99,66,33,.5)",
 				strokeColor: "rgba(0,0,0,0)",
 			},
 			{
-				fillColor: "rgba(16,153,24,1)",
+				fillColor: "rgba(33,99,66,.5)",
 				strokeColor: "rgba(0,0,0,0)",
 			},
 		];
@@ -211,7 +211,7 @@ module app.services {
 				{
 					startY: (doc.internal.pageSize.width - this.marginLeft * 2) / 2 + this.marginTop + this.rowHeight * 2.5,
 					rowHeight: this.rowHeight,
-					margin: { top: this.marginTop + this.rowHeight * 2, left: this.marginLeft, right: this.marginLeft, bottom: this.marginTop + this.rowHeight * 1.5 },
+					margin: { top: this.marginTop + this.rowHeight * 2, left: this.marginLeft, right: this.marginLeft, bottom: this.marginTop + this.rowHeight * 3 },
 					createdHeaderCell: function(cell, data) {
 						cell.styles.halign = 'right';
 					},
@@ -333,7 +333,7 @@ module app.services {
 				{
 					startY: (doc.internal.pageSize.width - this.marginLeft * 2) / 2 + this.marginTop + this.rowHeight * 2.5,
 					rowHeight: this.rowHeight,
-					margin: { top: this.marginTop + this.rowHeight * 2, left: this.marginLeft, right: this.marginLeft, bottom: this.marginTop + this.rowHeight * 1.5 },
+					margin: { top: this.marginTop + this.rowHeight * 2, left: this.marginLeft, right: this.marginLeft, bottom: this.marginTop + this.rowHeight * 3 },
 					drawRow: function(row, data) {
 						self.subLabel(doc, row, data);
 					},

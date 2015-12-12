@@ -145,8 +145,8 @@ module app.routes.home {
 				console.log("redirect to..." + link);
 				if (link == "pdf" && window != window.top) {
 					var doc = pdfService.createPDF(this.businessService.file());
-					var data = doc.output('datauristring');
-					businessService.openChromePdf(data);
+					var data = doc.output('arraybuffer');
+					this.businessService.openChromePdf(data);
 				}
 				else {
 					$location.path("/" + link + "/");

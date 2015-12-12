@@ -19,6 +19,7 @@ module app.routes.pdf {
 			'$scope',
 			'$location',
 			'$translate',
+			'$timeout',
 			'app.services.IBusinessService',
 			'app.services.IHeaderService',
 			'app.services.IPDFService'
@@ -30,10 +31,15 @@ module app.routes.pdf {
 			private $scope: any,
 			private $location: ng.ILocationService,
 			private $translate: ng.translate.ITranslateService,
+			private $timeout: ng.ITimeoutService,
 			businessService: app.services.IBusinessService,
 			headerService: app.services.IHeaderService,
 			pdfService: app.services.IPDFService) {
 
+			document.getElementById("content-wrapper").style.display = "none";
+            document.getElementById("loader-wrapper").style.display = "block";
+			
+			$timeout(()=>{
 			headerService.title = "PDF";
 			this.file = businessService.file();
 			
@@ -41,9 +47,14 @@ module app.routes.pdf {
 			var doc = pdfService.createPDF(this.file);
 			
 			var ele = angular.element(document.getElementById("preview"));
-			var data = doc.output('bloburi');
+			var data = doc.output('bloburl');
+			
 			console.log(data);
 			ele.attr('src', data);
+			
+			document.getElementById("content-wrapper").style.display = "block";
+            document.getElementById("loader-wrapper").style.display = "none";
+			},0);
 		}
 	}
 }

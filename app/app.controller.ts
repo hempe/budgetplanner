@@ -119,7 +119,7 @@ module app {
 
 		private openPDF() {
 			var doc = this.pdfService.createPDF(this.businessService.file());
-			var data = doc.output('datauristring');
+			var data = doc.output('arraybuffer');
 			this.businessService.openChromePdf(data);
 		}
 	}

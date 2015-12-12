@@ -56,8 +56,12 @@ module app.routes.development {
 				var budgetIndex = 0;
 				for (var i = 0; i < this.file.development.elements.length; i++) {
 					if (this.file.development.elements[i].year <= year) {
+						if(this.file.development.elements[i].budget >= this.file.budgets.length){
+							this.file.development.elements[i].budget = this.file.budgets.length -1;
+						}
+						
 						budget = this.budgetTotalArr[this.file.development.elements[i].budget];
-						budgetIndex = i;
+						budgetIndex = this.file.development.elements[i].budget;
 					}
 				}
 

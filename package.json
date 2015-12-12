@@ -1,7 +1,6 @@
 {
   "name": "budget-planner",
   "version": "1.0.0",
-  "description": "",
   "main": "gulpfile.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -23,5 +22,14 @@
     "merge2": "^0.3.6",
     "run-sequence": "^1.1.5"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hempe/budgetplanner.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hempe/budgetplanner/issues"
+  },
+  "homepage": "https://github.com/hempe/budgetplanner#readme",
+  "description": ""
 }

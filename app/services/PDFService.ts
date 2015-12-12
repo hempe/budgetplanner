@@ -62,10 +62,122 @@ module app.services {
 					]);
 			});
 
+			
+			
+			this.development(doc,file);
+			
 			this.putTotalPages(doc);
 			doc.setPage(1);
-			doc.text("Hello Kundeninfos...", 60, 60);
+			
+			
+			doc.setTextColor(33, 66, 99);
+			doc.setFontSize(this.fontHeight * 2);
+			doc.text(file.name, this.marginLeft, this.marginTop*4);
+			doc.setFontSize(this.fontHeight);
+			
+			
+			doc.setTextColor(0);
+			this.client(doc,file.client);
 			return doc;
+		}
+		
+		private client(doc, client:components.IClient){
+			
+			var i = 1;
+			
+			doc.setFontSize(this.fontHeight * 1.2);
+			this.clientRow(doc, client.company, i++);
+			
+			doc.setFontSize(this.fontHeight * 1.5);
+			this.clientRow(doc, client.name + " "+ client.prename, i++);
+			
+			doc.setFontSize(this.fontHeight * 1.2);
+			i++;
+			this.clientRow(doc, client.street, i++);
+			this.clientRow(doc, client.zipCode+ " " +client.city, i++);
+			
+			
+			i++;
+			
+			this.clientRow(doc, client.eMail,  i++);
+			this.clientRow(doc,client.telNumber, i++); 
+			this.clientRow(doc, client.mobilNumber, i++);
+			
+			i++;
+			
+			this.clientRow(doc,	client.comment, i++);
+		}
+		
+		private development(doc, file): void {
+			var dv =  new routes.development.DevelopmentChartFactory(file);
+			var d = dv.budgetTotals();
+			console.log(d);
+			var headerText = "Vermögensentwicklung";
+			
+			var self = this;
+			var rows = [];
+			var columns = ["Jahr (Budget)", "", "" , "Restvermögen"];
+			
+			var index = 0;
+			
+			d.labels.forEach((l, i) => {
+				rows.push([
+					l,
+					d.data[0][i].formatMoney(),
+					d.data[1][i] == 0 ? "": d.data[1][i].formatMoney(),
+					d.data[2][i].formatMoney(),
+					]);
+			})
+
+			var last = 0;
+			doc.autoTable(columns, rows,
+				{
+					startY: this.marginTop,
+					rowHeight: this.rowHeight,
+					margin: { top: this.marginTop + this.rowHeight * 2, left: this.marginLeft, right: this.marginLeft, bottom: this.marginTop + this.rowHeight * 1.5  },
+					createdHeaderCell: function(cell, data) {
+						cell.styles.halign = 'right';
+					},
+					drawHeaderCell: function(cell, data) {
+						if (data.column.dataKey == 0)
+							cell.textPos.x = cell.x + cell.contentWidth - 5;
+					},
+					beforePageContent: (d) => this.header(doc, d, headerText),
+					afterPageContent: (d) => this.footer(doc, d),
+					pageBreak: 'always',
+					styles: {
+						fillStyle: 'DF',
+						lineColor: 88,
+						lineWidth: 0
+					},
+					headerStyles: {
+						fillColor: 255,
+						textColor: [44, 77, 170],
+						fontSize: this.fontHeight * 1.4,
+						rowHeight: this.rowHeight * 1.4,
+						margin: 0,
+						fontStyle: 'normal',
+						lineColor: 255,
+					},
+					bodyStyles: {
+						textColor: 0
+					},
+					alternateRowStyles: {
+						fillColor: [240, 240, 240]
+					},
+					columnStyles: {
+					},
+					createdCell: function(cell, data) {
+						if (data.column.dataKey > 0) {
+							cell.styles.halign = 'right';
+						}
+					}
+				}
+			);
+		}
+		
+		private clientRow(doc, value, row){
+			doc.text(value, this.marginLeft, this.marginTop*5 + this.rowHeight*(row+1)*1.4);
 		}
 
 		private putTotalPages(doc) {

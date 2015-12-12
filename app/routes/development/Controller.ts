@@ -32,22 +32,25 @@ module app.routes.development {
 			this.assets = file.assets.positiv.Total() - file.assets.negativ.Total();
 		}
 
-		public assetTotals() {
+		public budgetTotals() {
 			var chartData = new app.directives.ChartData();
-			var currentAsset = this.assets;
-
+			chartData.series.push("Budget");
+			chartData.series.push("Revenue");
 			chartData.series.push("Assets");
+			
 			chartData.data.push([]);
+			chartData.data.push([]);
+			chartData.data.push([]);
+
+			var currentAsset = this.assets;
 
 			this.revenueTotalArr.forEach((value, year) => {
 				if (year < this.file.development.from)
 					currentAsset += value;
 			});
-
+			
 			for (var year = this.file.development.from; year < this.file.development.to; year++) {
-				chartData.labels.push(year.toString());
-				if (this.revenueTotalArr[year] !== undefined)
-					currentAsset += this.revenueTotalArr[year]
+				
 
 				var budget = this.budgetTotalArr[0];
 				var budgetIndex = 0;
@@ -57,42 +60,18 @@ module app.routes.development {
 						budgetIndex = i;
 					}
 				}
-				currentAsset += budget;
-				chartData.data[0].push(currentAsset);
-			}
-			return chartData;
-		};
-
-		public budgetTotals() {
-			var chartData = new app.directives.ChartData();
-			chartData.series.push("Budget");
-			chartData.series.push("Revenue");
-
-			chartData.data.push([]);
-			chartData.data.push([]);
-
-			for (var year = this.file.development.from; year < this.file.development.to; year++) {
-				chartData.labels.push(year.toString());
-
-				var budget = this.budgetTotalArr[0];
-				var budgetIndex = 0;
-				for (var i = 0; i < this.file.development.elements.length; i++) {
-					if (this.file.development.elements[i].year <= year) {
-						budget = this.budgetTotalArr[this.file.development.elements[i].budget];
-						budgetIndex = i;
-					}
-				}
-
+				
+				chartData.labels.push(year.toString()+" ("+this.file.budgets[budgetIndex].name+")");
+				
 				chartData.data[0].push(budget);
 				if (this.revenueTotalArr[year] !== undefined)
 					chartData.data[1].push(this.revenueTotalArr[year]);
 				else
 					chartData.data[1].push(0);
+					
+				currentAsset += budget;
+				chartData.data[2].push(currentAsset);
 			}
-
-			var merge: app.directives.ChartData = this.assetTotals();
-			chartData.data.push(merge.data[0]);
-			chartData.series.push(merge.series[0]);
 
 			return chartData;
 		};

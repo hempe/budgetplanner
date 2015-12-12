@@ -1,8 +1,6 @@
-<strong>Home View !!!!</strong>
-
 <style>
 	.home-grid {
-		width: 33%;
+		width: 33.333333%;
 		float: left;
 	}
 	
@@ -43,185 +41,113 @@
 		margin-top: 130px;
 	}
 	
-	.home-grid .positiv-budget {
-		background-color: #95df54;
-	}
-	
-	.home-grid .negativ-budget {
-		background-color: #f1672c;
+	.home-grid md-grid-tile {
+		transition: all 400ms ease-out 50ms;
 	}
 	
 	.home-grid .gray {
 		background: #f5f5f5;
 	}
 	
-	.home-grid .green {
-		background: #b9f6ca;
-	}
-	
-	.home-grid .yellow {
-		background: #ffff8d;
-	}
-	
-	.home-grid .blue {
-		background: #84ffff;
-	}
-	
-	.home-grid .purple {
-		background: #b388ff;
-	}
-	
-	.home-grid .red {
-		background: #ff8a80;
-	}
-	
-	.home-grid md-grid-tile {
-		transition: all 400ms ease-out 50ms;
-	}
 </style>
-<!--<div layout layout-xs="column">-->
-<div style="margin:auto;max-width:1200px"><!--max-width:1200px-->
+<div style="margin:auto;max-width:1200px">
+	<!--max-width:1200px-->
 	<div style="width:100%">
-		<md-input-container flex>
-			<label>Filename</label>
-			<input ng-model="file.name" type="text">
-		</md-input-container>
-		<div>
-			<!--
-		<md-input-container flex>
-		<label>Filename</label>
-		<input ng-model="file.name" type="text">
-	</md-input-container>
-	-->
-
-			<div class="home-grid" ng-click="goto('client')">
-				<md-card style="margin-bottom:1em;">
-					<div style="margin:20px">
-						<div class="other">
-							<ng-md-icon icon="account_circle" style="fill:grey;" size=150></ng-md-icon>
-							<div>{{file.client.name}} {{file.client.prename}}</div>
-						</div>
+		<md-card>
+			<md-card-content layout="row">
+				<md-input-container flex>
+					<label>Filename</label>
+					<input ng-model="file.name" type="text">
+				</md-input-container>
+			</md-card-content>
+		</md-card>
+		<div class="home-grid" ng-click="goto('client')">
+			<md-card style="margin-bottom:1em;">
+				<div style="margin:20px">
+					<div class="other">
+						<ng-md-icon icon="account_circle" style="fill:grey;" size=150></ng-md-icon>
+						<div>{{file.client.name}} {{file.client.prename}}</div>
 					</div>
-					<md-card-content class="gray">
-						<span flex>
+				</div>
+				<md-card-content class="gray">
+					<span flex>
 						<span style="float:left" translate>CLIENT_LINK</span>
-						</span>
-					</md-card-content>
-				</md-card>
-			</div>
-
-			<div class="home-grid" ng-click="goto('pdf')">
-				<md-card style="margin-bottom:1em;">
-					<div style="margin:20px">
-						<div class="other">
-							<ng-md-icon icon="print" style="fill:grey;" size=150></ng-md-icon>
-							<div>{{file.name}}.pdf</div>
-						</div>
-					</div>
-					<md-card-content class="gray">
-						<span flex>
-						<span style="float:left" translate>PDF</span>
-						</span>
-					</md-card-content>
-				</md-card>
-			</div>
-			<div class="home-grid" ng-click="goto('development')">
-				<md-card style="margin-bottom:1em;">
-
-					<div style="margin:20px">
-						<bp-chart-wrapper style="height:300px;" colors="developmentColors" options="developmentOptions" chart-type="Bar" watch="windowWidth"
-						create-data="createDataDevelopment"></bp-chart-wrapper>
-					</div>
-
-					<md-card-content class="gray">
-						<span flex>
-						<span style="float:left" translate>ASSETDEVELOPMENT_LINK</span>
-						</span>
-					</md-card-content>
-				</md-card>
-			</div>
-
-			<div class="home-grid" ng-click="goto('assets/assets')">
-				<md-card style="margin-bottom:1em;">
-					<div style="margin:20px">
-						<bp-chart-wrapper style="height:300px;" colors="assetColors" options="options" chart-type="Bar" watch="windowWidth" create-data="createDataAsset"></bp-chart-wrapper>
-					</div>
-					<md-card-content class="gray">
-						<span flex>
-						<span style="float:left" translate>ASSETS_AND_DEBTS</span>
-						<span style="float:right;margin-right:15px">{{(file.revenue.positiv.Total() - file.revenue.negativ.Total()).formatMoney()}}</span>
-						</span>
-					</md-card-content>
-				</md-card>
-			</div>
-
-			<div class="home-grid" ng-click="goto('assets/revenue')">
-				<md-card style="margin-bottom:1em;">
-					<div style="margin:20px">
-						<bp-chart-wrapper colors="assetColors" options="options" chart-type="Bar" watch="windowWidth" create-data="createDataRevenue"></bp-chart-wrapper>
-					</div>
-					<md-card-content class="gray">
-						<span flex>
-						<span style="float:left" translate>ONE_TIME_REVENUE_AND_EXPENDITURE</span>
-						<span style="float:right;margin-right:15px">{{(file.revenue.positiv.Total() - file.revenue.negativ.Total()).formatMoney()}}</span>
-						</span>
-					</md-card-content>
-				</md-card>
-			</div>
-
-			<div class="home-grid" ng-click="goto('budget/0')">
-				<md-card style="margin-bottom:1em;">
-					<div style="margin:20px">
-						<bp-chart-wrapper colors="budgetColors" options="options" chart-type="Bar" watch="windowWidth" create-data="createDataBudget"></bp-chart-wrapper>
-					</div>
-					<md-card-content class="gray">
-						<span flex>
-						<span style="float:left" translate>BUDGET_LINK</span>
-						</span>
-					</md-card-content>
-				</md-card>
-			</div>
-
-			<!--
-	<div class="gridListdemoBasicUsage">
-		<md-grid-list md-cols-xs="1" md-cols-sm="3" md-cols="4" md-row-height-gt-md="1:1" md-row-height="2:2" md-gutter="12px"
-		md-gutter-gt-xs="8px">
-			<md-grid-tile class="gray" ng-repeat="b in file.budgets">
-				<bp-chart-wrapper colors="colors" options="options" chart-type="Bar" watch="windowWidth" create-data="createData[$index]"></bp-chart-wrapper>
-				<md-grid-tile-footer flex>
-					<h3>
-						<span style="float:left">{{b.name}}</span>
-						<span style="float:right;margin-right:15px">{{(b.positiv.Total() - b.negativ.Total()).formatMoney()}}</span>
-					</h3>
-				</md-grid-tile-footer>
-			</md-grid-tile>
-			<md-grid-tile class="green">
-				<md-grid-tile-footer>
-					<h3>#2: (1r x 1c)</h3>
-				</md-grid-tile-footer>
-			</md-grid-tile>
-			<md-grid-tile class="yellow">
-				<md-grid-tile-footer>
-					<h3>#3: (1r x 1c)</h3>
-				</md-grid-tile-footer>
-			</md-grid-tile>
-			<md-grid-tile class="blue">
-				<md-grid-tile-footer>
-					<h3>#4: (1r x 1c)</h3>
-				</md-grid-tile-footer>
-			</md-grid-tile>
-			<md-grid-tile class="purple">
-				<md-grid-tile-footer>
-					<h3>#5: (1r x 1c)</h3>
-				</md-grid-tile-footer>
-			</md-grid-tile>
-			<md-grid-tile class="red">
-				<md-grid-tile-footer>
-					<h3>#6: (1r x 1c)</h3>
-				</md-grid-tile-footer>
-			</md-grid-tile>
-		</md-grid-list>
-	</div>
-	-->
-
+					</span>
+				</md-card-content>
+			</md-card>
 		</div>
+
+		<div class="home-grid" ng-click="goto('pdf')">
+			<md-card style="margin-bottom:1em;">
+				<div style="margin:20px">
+					<div class="other">
+						<ng-md-icon icon="print" style="fill:grey;" size=150></ng-md-icon>
+						<div>{{file.name}}.pdf</div>
+					</div>
+				</div>
+				<md-card-content class="gray">
+					<span flex>
+						<span style="float:left" translate>PDF</span>
+					</span>
+				</md-card-content>
+			</md-card>
+		</div>
+		<div class="home-grid" ng-click="goto('development')">
+			<md-card style="margin-bottom:1em;">
+
+				<div style="margin:20px">
+					<bp-chart-wrapper style="height:300px;" colors="developmentColors" options="developmentOptions" chart-type="Bar" watch="windowWidth"
+					create-data="createDataDevelopment"></bp-chart-wrapper>
+				</div>
+
+				<md-card-content class="gray">
+					<span flex>
+						<span style="float:left" translate>ASSETDEVELOPMENT_LINK</span>
+					</span>
+				</md-card-content>
+			</md-card>
+		</div>
+
+		<div class="home-grid" ng-click="goto('assets/assets')">
+			<md-card style="margin-bottom:1em;">
+				<div style="margin:20px">
+					<bp-chart-wrapper style="height:300px;" colors="assetColors" options="options" chart-type="Bar" watch="windowWidth" create-data="createDataAsset"></bp-chart-wrapper>
+				</div>
+				<md-card-content class="gray">
+					<span flex>
+						<span style="float:left" translate>ASSETS_AND_DEBTS</span>
+					<span style="float:right;margin-right:15px">{{(file.revenue.positiv.Total() - file.revenue.negativ.Total()).formatMoney()}}</span>
+					</span>
+				</md-card-content>
+			</md-card>
+		</div>
+
+		<div class="home-grid" ng-click="goto('assets/revenue')">
+			<md-card style="margin-bottom:1em;">
+				<div style="margin:20px">
+					<bp-chart-wrapper colors="assetColors" options="options" chart-type="Bar" watch="windowWidth" create-data="createDataRevenue"></bp-chart-wrapper>
+				</div>
+				<md-card-content class="gray">
+					<span flex>
+						<span style="float:left" translate>ONE_TIME_REVENUE_AND_EXPENDITURE</span>
+					<span style="float:right;margin-right:15px">{{(file.revenue.positiv.Total() - file.revenue.negativ.Total()).formatMoney()}}</span>
+					</span>
+				</md-card-content>
+			</md-card>
+		</div>
+
+		<div class="home-grid" ng-click="goto('budget/0')">
+			<md-card style="margin-bottom:1em;">
+				<div style="margin:20px">
+					<bp-chart-wrapper colors="budgetColors" options="options" chart-type="Bar" watch="windowWidth" create-data="createDataBudget"></bp-chart-wrapper>
+				</div>
+				<md-card-content class="gray">
+					<span flex>
+						<span style="float:left" translate>BUDGET_LINK</span>
+					</span>
+				</md-card-content>
+			</md-card>
+		</div>
+		
+	</div>
+</div>

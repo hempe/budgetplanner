@@ -2235,6 +2235,12 @@
 				return values;
 			};
 
+			var hiddenLabel = [];
+			if(this.options.legendShowLabels !== false){
+				hiddenLabel = labels;
+			}else{				
+				labels.forEach(function(){hiddenLabel.push("")});
+			}
 			var scaleOptions = {
 				templateString : this.options.scaleLabel,
 				height : this.chart.height,
@@ -2258,7 +2264,7 @@
 					);
 					helpers.extend(this, updatedRanges);
 				},
-				xLabels : labels,
+				xLabels : hiddenLabel,
 				font : helpers.fontString(this.options.scaleFontSize, this.options.scaleFontStyle, this.options.scaleFontFamily),
 				lineWidth : this.options.scaleLineWidth,
 				lineColor : this.options.scaleLineColor,

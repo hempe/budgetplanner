@@ -37,7 +37,7 @@ module app.routes.development {
 			chartData.series.push("Budget");
 			chartData.series.push("Revenue");
 			chartData.series.push("Assets");
-			
+
 			chartData.data.push([]);
 			chartData.data.push([]);
 			chartData.data.push([]);
@@ -48,9 +48,9 @@ module app.routes.development {
 				if (year < this.file.development.from)
 					currentAsset += value;
 			});
-			
+
 			for (var year = this.file.development.from; year < this.file.development.to; year++) {
-				
+
 
 				var budget = this.budgetTotalArr[0];
 				var budgetIndex = 0;
@@ -60,15 +60,15 @@ module app.routes.development {
 						budgetIndex = i;
 					}
 				}
-				
-				chartData.labels.push(year.toString()+" ("+this.file.budgets[budgetIndex].name+")");
-				
+
+				chartData.labels.push(year.toString() + " (" + this.file.budgets[budgetIndex].name + ")");
+
 				chartData.data[0].push(budget);
 				if (this.revenueTotalArr[year] !== undefined)
 					chartData.data[1].push(this.revenueTotalArr[year]);
 				else
 					chartData.data[1].push(0);
-					
+
 				currentAsset += budget;
 				chartData.data[2].push(currentAsset);
 			}
@@ -116,9 +116,10 @@ module app.routes.development {
 
 
 			$scope.options = {
-				animation: true,
+				animation: false,
 				scaleBeginAtZero: false,
 				responsive: true,
+				legendShowLabels: window.innerWidth > 960,
 				scaleGridLineColor: "rgba(66,66,66,0.1)",
 				scaleLineColor: "rgba(66,66,66,0.8)",
 				scaleFontColor: "rgba(66,66,66,0.8)",
@@ -140,6 +141,25 @@ module app.routes.development {
 				},
 			];
 
+			window.onresize = ()=>{
+				var legendShowLabels = window.innerWidth > 960;
+				if($scope.options.legendShowLabels != legendShowLabels){
+					$scope.$apply(()=>{
+						$scope.options.legendShowLabels = legendShowLabels;
+					});
+				} 
+			};
+			
+			$scope.$watch('development', () => {
+				if ($scope.development.elements[0].year != $scope.development.from) {
+					$scope.development.elements[0].year = $scope.development.from;
+				}
+				for (var i = 1; i < $scope.development.elements.length; i++) {
+					if ($scope.development.elements[i].year <= $scope.development.elements[i - 1].year) {
+						$scope.development.elements[i].year = $scope.development.elements[i - 1].year + 1;
+					}
+				}
+			}, true);
 
 
 		}

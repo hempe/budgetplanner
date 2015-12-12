@@ -50,9 +50,11 @@ module app.routes.home {
 				//barDatasetSpacing: 50,
 				//barValueSpacing: 50,
 				scaleShowLabels : false,
+				legendShowLabels : false,
 			}
 			
-			$scope.developmentOptions = angular.copy($scope.options)
+			$scope.developmentOptions = angular.copy($scope.options);
+			$scope.developmentOptions.scaleBeginAtZero = false;
 			//$scope.developmentOptions.barDatasetSpacing = 5;
 			//$scope.developmentOptions.barValueSpacing = 1;
 

@@ -98,12 +98,10 @@ module app.services {
             //TODO: wie höre ich auf?
             $rootScope.chronicle = Chronicle.record(['file'], $rootScope);
             $rootScope.chronicle.addOnAdjustFunction(() => {
-                console.log("stuff changed");
                 this.writeToLocalStorage();
             });
 
             $rootScope.chronicle.addOnUndoFunction(() => {
-                console.log("stuff undo");
             });
         }
     }

@@ -38,7 +38,7 @@
 
 
                         <h3 ng-bind="title()"></h3>
-                        
+
                         <span flex></span>
                         <button ng-click="setLanguageDE()">DE</button>
                         <button ng-click="setLanguageEN()">EN</button>
@@ -51,7 +51,7 @@
                             <ng-md-icon icon="folder_open" style="fill:white;"></ng-md-icon>
                             <md-tooltip>Open file</md-tooltip>
                         </md-button>
-                        
+
                         <md-button aria-label="download" class="md-icon-button" ng-if="!isChromeApp" ng-click="download()">
                             <ng-md-icon icon="file_download" style="fill:white;"></ng-md-icon>
                             <md-tooltip>Download file</md-tooltip>
@@ -81,6 +81,8 @@
             </md-content>
         </section>
     </div>
+
+
     <div id="loader-wrapper">
         <div class="loader-bookshelf_wrapper">
             <ul class="loader-books_list">
@@ -92,12 +94,12 @@
                 <li class="loader-book_item loader-sixth"></li>
             </ul>
             <div class="loader-shelf"></div>
-            <h1 class="loader-text">
-            Budget Planner 2.0
-        </h1>
+            <h1 class="loader-text">Budget Planner 2.0</h1>
         </div>
     </div>
+    
+    
     <script src="js/app.js"></script>
+    
 </body>
-
 </html>

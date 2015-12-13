@@ -132,7 +132,7 @@ gulp.task('build:sass', function () {
 
  
  gulp.task('build:html', function() {
-    var imgSrc = './app/*.html',
+    var imgSrc = ['./app/*.html','./app/*.ico'],
         imgDst = './release/';
     return gulp.src(imgSrc)
         .pipe(gulp.dest(imgDst));

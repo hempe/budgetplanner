@@ -72,7 +72,10 @@ module app.services {
 			var doc = new jsPDF('portrait', 'pt', 'a4')
 			//doc.setFont('Raleway');
 			var pageHeight = doc.internal.pageSize.height;
-
+			
+			this.client(doc,file.client, file.name);
+			
+			doc.addPage();
 
 			this.tableGroup(doc, file.assets,
 				this.$translate.instant('ASSETS'),
@@ -110,19 +113,7 @@ module app.services {
 			this.development(doc, file);
 
 			this.putTotalPages(doc);
-			/*
-			doc.setPage(1);
 			
-			
-			doc.setTextColor(33, 66, 99);
-			doc.setFontSize(this.fontHeight * 2);
-			doc.text(file.name, this.marginLeft, this.marginTop*4);
-			doc.setFontSize(this.fontHeight);
-			
-			
-			doc.setTextColor(0);
-			this.client(doc,file.client);
-			*/
 			return doc;
 		}
 
@@ -143,25 +134,28 @@ module app.services {
 			});
 			return cd;
 		}
-		private client(doc, client: components.IClient) {
+		private client(doc, client: components.IClient, title:string) {
 
 			var i = 1;
 
+			this.header(doc, title);
+			
+			doc.setTextColor(44, 77, 170);
+			
 			if (client.company) {
 				doc.setFontSize(this.fontHeight * 1.2);
 				this.clientRow(doc, client.company, i++);
 			}
 
 			doc.setFontSize(this.fontHeight * 1.5);
-			this.clientRow(doc, client.name + " " + client.prename, i++);
+			this.clientRow(doc, (client.name + " " + client.prename).trim(), i++);
 
+			doc.setTextColor(0);
 			doc.setFontSize(this.fontHeight * 1.2);
 			i++;
 
 			if (client.street) this.clientRow(doc, client.street, i++);
-
-			this.clientRow(doc, client.zipCode + " " + client.city, i++);
-
+			this.clientRow(doc, (client.zipCode + " " + client.city).trim(), i++);
 
 			i++;
 			if (client.eMail) this.clientRow(doc, client.eMail, i++);
@@ -171,6 +165,8 @@ module app.services {
 			i++;
 
 			if (client.comment) this.clientRow(doc, client.comment, i++);
+			
+			this.footer(doc,this.marginLeft);
 		}
 
 		private development(doc, file): void {
@@ -179,11 +175,11 @@ module app.services {
 
 			var d = dv.budgetTotals();
 			console.log(d);
-			var headerText = "Vermögensentwicklung";
+			var headerText = this.$translate.instant('ASSETDEVELOPMENT_LINK');
 
 			var self = this;
 			var rows = [];
-			var columns = ["Jahr (Budget)", "", "", "Restvermögen"];
+			var columns = [this.$translate.instant('YEAR_BUDGET'), "", "", this.$translate.instant('RESIDUAL_ASSETS')];
 
 			var index = 0;
 
@@ -220,9 +216,9 @@ module app.services {
 							cell.textPos.x = cell.x + cell.contentWidth - 5;
 					},
 					beforePageContent: (d) => {
-						this.header(doc, d, headerText);
+						this.header(doc, headerText);
 					},
-					afterPageContent: (d) => this.footer(doc, d),
+					afterPageContent: (d) => this.footer(doc, d.settings.margin.left),
 
 					styles: {
 						fillStyle: 'DF',
@@ -256,7 +252,7 @@ module app.services {
 		}
 
 		private clientRow(doc, value, row) {
-			doc.text(value, this.marginLeft, this.marginTop * 5 + this.rowHeight * (row + 1) * 1.4);
+			doc.text(value, this.marginLeft, this.marginTop * 2 + this.rowHeight * (row + 1) * 1.4);
 		}
 
 		private putTotalPages(doc) {
@@ -264,13 +260,13 @@ module app.services {
 				doc.putTotalPages(this.totalPagesExp);
 		}
 
-		private header(doc, data, text): void {
+		private header(doc, text): void {
 			doc.setTextColor(33, 66, 99);
 			doc.setFontSize(this.fontHeight * 1.4);
 			doc.text(text, this.marginLeft, this.marginTop + this.rowHeight);
 		}
 
-		private footer(doc, data): void {
+		private footer(doc, left): void {
 			this.pagecount++;
 			doc.setTextColor(0);
 			doc.setFontSize(this.fontHeight * 0.8);
@@ -278,7 +274,7 @@ module app.services {
 			if (typeof doc.putTotalPages === 'function') {
 				str = str + " " + this.$translate.instant('PAGE_OFF') + " " + this.totalPagesExp;
 			}
-			doc.text(str, data.settings.margin.left, doc.internal.pageSize.height - this.marginTop);
+			doc.text(str, left, doc.internal.pageSize.height - this.marginTop);
 		}
 
 		private subLabel(doc, row, data): void {
@@ -344,8 +340,8 @@ module app.services {
 						if (data.column.dataKey == 0)
 							cell.textPos.x = cell.x + cell.contentWidth - 5;
 					},
-					beforePageContent: (d) => { this.header(doc, d, headerText); },
-					afterPageContent: (d) => this.footer(doc, d),
+					beforePageContent: (d) => { this.header(doc, headerText); },
+					afterPageContent: (d) => this.footer(doc, d.settings.margin.left),
 
 					styles: {
 						fillStyle: 'DF',

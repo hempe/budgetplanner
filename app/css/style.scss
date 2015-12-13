@@ -24,20 +24,13 @@
 }
 body{
 	font-size: 100% !important;
-	height: 100vh;
-	overflow: hidden;
 	background-color: #fafafa;
 }
-.page{
-	height: calc(100% - 4em);
-	margin-top: 4em;
-}
+
 .main-toolbar{
-	position: fixed;
-	left: 0;
-	right: 0;
-	top: 0;
+	box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
 }
+
 .hide-border{
     outline: none;
     border: none;
@@ -55,10 +48,6 @@ body{
 }
 .md-icon-menu-indent{
     position: relative;
-}
-
-.page{
-    background-color: transparent;
 }
 
 .header-menu-icon{

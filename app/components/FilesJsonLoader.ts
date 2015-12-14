@@ -6,7 +6,10 @@ module app.components {
 
 	export function LoadJsonFile(doc: { data: string }, file: IFile) {
 		var dto = <IFile>angular.fromJson(doc.data);
+		console.log("dto?");
 		file.name = dto.name;
+		file.language = dto.language;
+		
 		_Group(dto.assets, file.assets);
 		_Group(dto.revenue, file.revenue);
 		

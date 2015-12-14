@@ -10,6 +10,7 @@ module app.components {
         development: IDevelopmentGroup;
         client: IClient;
         name: string;
+        language: string;
     }
 
     export interface IBudget extends components.HasTotal {
@@ -86,7 +87,8 @@ module app.components {
             public development: IDevelopmentGroup;
             public client: Client;
             public name: string;
-
+            public language: string;
+            
             constructor() {
                 this.budgets = new components.ExtendedList<components.Group<Budget>>(new components.Group<Budget>(new Budget()));
                 this.assets = new components.Group<IAsset>(new Asset());

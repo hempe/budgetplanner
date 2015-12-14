@@ -12,8 +12,7 @@ module app {
 		goto(link: { link: string }): void;
 		toggleSideNav(): void;
 		title(): string;
-		setLanguageEN(): void;
-		setLanguageDE(): void;
+		setLanguage(language:string): void;
 
 		uploaded(file): void;
 		download(): void;
@@ -51,7 +50,10 @@ module app {
 			private pdfService: app.services.IPDFService
 		) {
 			var chronicle = <angular.chronicle.IWatch>($rootScope.chronicle);
-			$scope.undo = () => chronicle.undo();
+			$scope.undo = () => {
+				console.log("undoo");
+				chronicle.undo();
+			}
 			$scope.redo = () => chronicle.redo();
 			$scope.canRedo = () => chronicle.canRedo();
 			$scope.canUndo = () => chronicle.canUndo();
@@ -107,8 +109,8 @@ module app {
 				$mdSidenav('left').open();
             };
 
-			$scope.setLanguageDE = () => $translate.use('de');
-			$scope.setLanguageEN = () => $translate.use('en');
+			$scope.setLanguage = (language) => this.businessService.file().language = language;
+			
 
 			$scope.title = () => headerService.title;
 			$scope.uploaded = (file) => { businessService.open(file); }

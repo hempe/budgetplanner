@@ -120,14 +120,13 @@
     function ($rootScope, $parse) {
 
       //This is called to create the Watch
-      this.record = function record(watchVars, scope) {
-        var newWatch = new Watch(watchVars, scope);
+      this.record = function record(scope) {
+        var newWatch = new Watch(scope);
         return newWatch;
       };
 
       //Initializing Watch
-      var Watch = function Watch(watchVars, scope) {
-        this.watchVars = watchVars;
+      var Watch = function Watch(scope) {
         
         //scope
         if (isUndefined(scope)) {
@@ -155,30 +154,27 @@
         this.scope = scope;
         this.restoring = false;
         this.cancelWatch = {};
-        this.addWatch();
       };
 
 
-      Watch.prototype.addWatch = function addWatch() {
+      Watch.prototype.watch = function watch(wv) {
         var _this = this;
-        for (var i = 0; i < this.watchVars.length; i++) {
-          var wv = _this.watchVars[i];
-          if (_this.isScope) {
-            //this is assuming the scope given variable is the angular '$scope'
-            _this.cancelWatch[wv] = _this.scope.$watch(_this.watchVars[i], function (newValue, oldValue) {
-              _this.addToArchive.apply(_this, [wv, newValue, oldValue]);
-            }, true);
-          }
-          else {
-            //This is assuming the scope variable given is using the controller as syntax
-            //this is a funkier way of doing the above because $scope obscures a lot of the magic needed to $watch a variable
-            _this.cancelWatch[wv] = $rootScope.$watch(
-              bind(_this, function () { return _this.$parse(_this.watchVars[i])(_this.scope); }),
-              function (newValue, oldValue) { _this.addToArchive.apply(_this,[wv, newValue, oldValue]); },
-              true
-              );
-          }
+        if (_this.isScope) {
+          //this is assuming the scope given variable is the angular '$scope'
+          _this.cancelWatch[wv] = _this.scope.$watch(wv, function (newValue, oldValue) {
+            _this.addToArchive.apply(_this, [wv, newValue, oldValue]);
+          }, true);
         }
+        else {
+          //This is assuming the scope variable given is using the controller as syntax
+          //this is a funkier way of doing the above because $scope obscures a lot of the magic needed to $watch a variable
+          _this.cancelWatch[wv] = $rootScope.$watch(
+            bind(_this, function () { return _this.$parse(wv)(_this.scope); }),
+            function (newValue, oldValue) { _this.addToArchive.apply(_this, [wv, newValue, oldValue]); },
+            true
+            );
+        }
+        return _this;
       };
 
       Watch.prototype.addOnAdjustFunction = function addOnAdjustFunction(fn) {
@@ -227,7 +223,7 @@
 
       Watch.prototype.revert = function revert(revertToPos) {
         var property, i, j, out, properties;
-        
+
         while (this.currArchivePos > revertToPos && this.currArchivePos > 0) {
           properties = this.archive[this.currArchivePos - 1];
           for (i = 0; i < properties.length; i++) {
@@ -266,7 +262,7 @@
         if (this.restoring) return this.restoring = false;
         var eq = diff(oldValue, newValue);
         if (eq.length == 0) return;
-        for(var i =0;i<eq.length;i++) eq[i].uve = watchVar+eq[i].uve;
+        for (var i = 0; i < eq.length; i++) eq[i].uve = watchVar + eq[i].uve;
         this.newEntry(eq);
       };
 

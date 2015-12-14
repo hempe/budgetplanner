@@ -82,21 +82,34 @@ module app.services {
         public static $inject = [
             '$rootScope',
             '$route',
+            '$translate',
             'Chronicle',
             'chrome-sandbox'
         ];
         constructor(
             private $rootScope: any,
             private $route: any,
-            private Chronicle: angular.chronicle.IChronicle,
+            private $translate: ng.translate.ITranslateService,
+            private Chronicle: any|angular.chronicle.IChronicle,
             private chrome: chromesandbox.IChrome) {
 
             $rootScope.file = components.Files.CreateNew();
             this._initalize();
             
+            $rootScope.$watch('file.language',()=>{
+                console.log("setting language %o",$rootScope.file.language);
+                $translate.use($rootScope.file.language);
+            });
+            
 
-            //TODO: wie höre ich auf?
-            $rootScope.chronicle = Chronicle.record(['file'], $rootScope);
+            $rootScope.chronicle = Chronicle.record($rootScope);
+            
+            $rootScope.chronicle.watch('file.budgets')
+                                .watch('file.assets')
+                                .watch('file.revenue')
+                                .watch('file.client')
+                                .watch('file.language');
+            
             $rootScope.chronicle.addOnAdjustFunction(() => {
                 this.writeToLocalStorage();
             });

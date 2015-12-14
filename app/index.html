@@ -13,7 +13,7 @@
                 <!-- md-is-locked-open="$mdMedia('gt-md')">-->
                 <div style="background-size: cover; height:9em;padding:1em 1em; background:url('./images/wallpaper.png') rgb(33,150,243);">
                     <img src="images/logo.png" style="height:6em;width:6em; margin-left: 97px;" />
-                    <span style="color: white;display: block;text-align: center;font-size: 1.5em;margin: 1em;font-weight: bold;">Budget Planner 2.0</span>
+                    <span style="color: white;display: block;text-align: center;font-size: 1.5em;margin: 1em;font-weight: bold;">Budget Planner</span>
                 </div>
                 <md-content>
                     <md-menu-content>
@@ -37,38 +37,38 @@
                         <h3 ng-bind="title()"></h3>
 
                         <span flex></span>
-                        <button ng-click="setLanguageDE()">DE</button>
-                        <button ng-click="setLanguageEN()">EN</button>
+
+                        <md-button aria-label="undo" class="md-icon-button" ng-click="undo()" ng-if="canUndo()">
+                            <ng-md-icon icon="undo" style="fill:white;"></ng-md-icon>
+                            <md-tooltip><span translate>UNDO</span></md-tooltip>
+                        </md-button>
+                        <md-button aria-label="redo" class="md-icon-button" ng-click="redo()" ng-if="canRedo()">
+                            <ng-md-icon icon="redo" style="fill:white;"></ng-md-icon>
+                            <md-tooltip><span translate>REDO</span></md-tooltip>
+                        </md-button>
+
 
                         <md-button aria-label="save" class="md-icon-button" ng-if="isChromeApp" ng-click="saveChromeFile()">
                             <ng-md-icon icon="save" style="fill:white;"></ng-md-icon>
-                            <md-tooltip>Save file</md-tooltip>
+                            <md-tooltip><span translate>SAVE_FILE</span></md-tooltip>
                         </md-button>
                         <md-button aria-label="open" class="md-icon-button" ng-if="isChromeApp" ng-click="openChromeFile()">
                             <ng-md-icon icon="folder_open" style="fill:white;"></ng-md-icon>
-                            <md-tooltip>Open file</md-tooltip>
+                            <md-tooltip><span translate>OPEN_FILE</span></md-tooltip>
                         </md-button>
 
                         <md-button aria-label="download" class="md-icon-button" ng-if="!isChromeApp" ng-click="download()">
                             <ng-md-icon icon="file_download" style="fill:white;"></ng-md-icon>
-                            <md-tooltip>Download file</md-tooltip>
+                            <md-tooltip><span translate>DOWNLOAD_FILE</span></md-tooltip>
                         </md-button>
                         <file-upload accept=".xbp,.bpj" bp-uploaded="uploaded" ng-if="!isChromeApp">
                             <md-button aria-label="upload" class="md-icon-button">
                                 <ng-md-icon icon="file_upload" style="fill:white;"></ng-md-icon>
-                                <md-tooltip>Upload file</md-tooltip>
+                                <md-tooltip><span translate>UPLOAD_FILE</span></md-tooltip>
                             </md-button>
                         </file-upload>
-
-                        <md-button aria-label="undo" class="md-icon-button" ng-click="undo()">
-                            <ng-md-icon icon="undo" style="fill:white;" ng-if="canUndo()"></ng-md-icon>
-                            <ng-md-icon icon="undo" style="fill:#666;" ng-if="!canUndo()"></ng-md-icon>
-                            <md-tooltip>Undo</md-tooltip>
-                        </md-button>
-                        <md-button aria-label="redo" class="md-icon-button" ng-click="redo()">
-                            <ng-md-icon icon="redo" style="fill:white;" ng-if="canRedo()"></ng-md-icon>
-                            <ng-md-icon icon="redo" style="fill:#666;" ng-if="!canRedo()"></ng-md-icon>
-                            <md-tooltip>Redo</md-tooltip>
+                        <md-button aria-label="download" class="md-icon-button" ng-click="goto(menus[0])">
+                            <ng-md-icon icon="dashboard" style="fill:white;"></ng-md-icon>
                         </md-button>
                     </div>
                 </md-toolbar>
@@ -89,7 +89,7 @@
                     <li class="loader-book_item loader-sixth"></li>
                 </ul>
                 <div class="loader-shelf"></div>
-                <h1 class="loader-text">Budget Planner 2.0</h1>
+                <h1 class="loader-text">Budget Planner</h1>
             </div>
         </div>
         <script src="js/app.js"></script>

@@ -11,7 +11,7 @@ declare module angular.chronicle {
         * @param 'watchVars' is an array of stringified variable name you want to be able to undo.
         * @param scope is the variable that contains your watch variable and your unwatched variables.
         */
-        record(watchVars: string[], scope: ng.IScope | ng.IRootScopeService): IWatch;
+        record(scope: ng.IScope | ng.IRootScopeService): IWatch;
     }
 
     interface IAdjustFunction { (): void; }
@@ -43,5 +43,7 @@ declare module angular.chronicle {
         canRedo(): boolean;
         //Returns true if an undo can be performed, false otherwise
         canUndo(): boolean;
+        
+        watch(watchExpr:string):IWatch;
     }
 }

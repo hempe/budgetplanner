@@ -33,10 +33,16 @@
 				<div ng-repeat="element in development.elements" sv-part="development.elements">
 					<div sv-element layout="row" >
 						<select flex=60 class="hide-border" ng-model="element.budget" ng-options="budgets.indexOf(item) as item.name for item in budgets"></select>
-						<input flex=30 class="hide-border" ng-model="element.year" type="number" />
+						<input flex=30 class="hide-border" ng-model="element.year" type="number" style="text-align:right" />
 						<button ng-click="development.elements.remove(element)" class="md-icon-button md-button md-ink-ripple" type="button">
 							<ng-md-icon icon="delete" style="fill:#666" size=24></ng-md-icon>
 						</button>
+						<a href="#/budget/{{element.budget}}/" class="md-icon-button md-button md-ink-ripple" type="button">
+							<md-tooltip  md-direction="right">
+            					<span translate>GOTO</span> {{budgets[element.budget].name}}
+          					</md-tooltip>
+							<ng-md-icon icon="pageview" style="fill:#666" size=24></ng-md-icon>
+						</a>
 					</div>
 				</div>
 			</div>

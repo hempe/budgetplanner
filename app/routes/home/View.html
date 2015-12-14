@@ -48,7 +48,6 @@
 	.home-grid .gray {
 		background: #f5f5f5;
 	}
-	
 </style>
 <div style="margin:auto;max-width:1200px">
 	<!--max-width:1200px-->
@@ -58,6 +57,13 @@
 				<md-input-container flex>
 					<label>Filename</label>
 					<input ng-model="file.name" type="text">
+				</md-input-container>
+				<md-input-container flex>
+					<label>Language</label>
+					<md-select ng-model="file.language">
+						<md-option value="en">English</md-option>
+						<md-option value="de">Deutsch</md-option>
+					</md-select>
 				</md-input-container>
 			</md-card-content>
 		</md-card>
@@ -148,6 +154,6 @@
 				</md-card-content>
 			</md-card>
 		</div>
-		
+
 	</div>
 </div>

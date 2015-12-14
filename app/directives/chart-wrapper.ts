@@ -22,8 +22,6 @@ module app.directives {
 
     element.removeClass('above below');
     element.addClass(tooltip.yAlign);
-
-    console.log(tooltip);
     
     var innerHtml = "";
     if(tooltip.title != undefined)
@@ -78,12 +76,10 @@ module app.directives {
       + '</div>',
       link: ($scope: any, element, attr) => {
         $scope.$watch('watch', () => {
-          console.warn("watchabel changed...");
           var data: ChartData = $scope.createData();
           $scope.labels = data.labels;
           $scope.series = data.series;
           $scope.data = data.data;
-          console.log(data);
         }, true);
         $scope.onClick = function(points, evt) {
           console.log(points, evt);

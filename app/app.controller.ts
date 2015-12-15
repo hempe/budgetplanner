@@ -25,6 +25,8 @@ module app {
 		canUndo(): void;
 		canRedo(): void;
 		isChromeApp: boolean;
+		
+		lockSideMenu:boolean;
 	}
 
     export class AppController {
@@ -37,6 +39,7 @@ module app {
 			'app.services.IHeaderService',
 			'app.services.IBusinessService',
 			'app.services.IPDFService',
+			'app.services.IStorageService',
 
 		];
 		constructor(
@@ -47,7 +50,8 @@ module app {
 			private $translate: ng.translate.ITranslateProvider,
 			private headerService: app.services.IHeaderService,
 			private businessService: app.services.IBusinessService,
-			private pdfService: app.services.IPDFService
+			private pdfService: app.services.IPDFService,
+			private storageService: app.services.IStorageService
 		) {
 			var chronicle = <angular.chronicle.IWatch>($rootScope.chronicle);
 			$scope.undo = () => {
@@ -58,6 +62,13 @@ module app {
 			$scope.canRedo = () => chronicle.canRedo();
 			$scope.canUndo = () => chronicle.canUndo();
 			$scope.isChromeApp = window != window.top;
+			
+			storageService.read("lockSideMenu").then(lock=>{
+				$scope.lockSideMenu = lock;
+			});
+			$scope.$watch('lockSideMenu',()=>{
+				storageService.write("lockSideMenu", $scope.lockSideMenu);
+			})
 			
 			//wrapper.chrome.onInit(() => $scope.$apply(() => $scope.isChromeApp = true));
 			$scope.message = "Hello"

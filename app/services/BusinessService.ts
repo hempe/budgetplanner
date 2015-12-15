@@ -49,40 +49,24 @@ module app.services {
         };
 
         private _initalize() {
-            var key = "file";
-            try {
-                if (typeof (Storage) === "undefined") {
-                    console.warn("Sorry! No Web Storage support.");
-                    return;
-                }
-                var localFileString = localStorage.getItem(key);
-                if (localFileString == undefined || localFileString == "") {
+            this.storageService.read("file").then(file=>{
+                if (file == undefined || file == "") {
                     console.info("No file in local Storage");
                     return;
                 }
-                this.open({ name: "", data: localFileString });
-
-            } catch (e) {
-                this.chrome.storage.local.get(key).then(d=> {
-                    this.open({ name: "", data: d[key] });
-                });
-            }
+                this.open({ name: "", data: angular.toJson(file) });
+            });
         };
 
         private writeToLocalStorage() {
-            var key = "file";
-            var data = angular.toJson(this.file());
-            try {
-                localStorage.setItem(key, data);
-            } catch (e) {
-                this.chrome.storage.local.set({ file: data });
-            }
+            this.storageService.write("file", this.file());
         }
 
         public static $inject = [
             '$rootScope',
             '$route',
             '$translate',
+            'app.services.IStorageService',
             'Chronicle',
             'chrome-sandbox'
         ];
@@ -90,6 +74,7 @@ module app.services {
             private $rootScope: any,
             private $route: any,
             private $translate: ng.translate.ITranslateService,
+            private storageService: app.services.IStorageService,
             private Chronicle: any|angular.chronicle.IChronicle,
             private chrome: chromesandbox.IChrome) {
 
@@ -111,6 +96,7 @@ module app.services {
                                 .watch('file.language');
             
             $rootScope.chronicle.addOnAdjustFunction(() => {
+                console.log("I hate you");
                 this.writeToLocalStorage();
             });
 

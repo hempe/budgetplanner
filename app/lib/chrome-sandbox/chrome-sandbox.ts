@@ -59,6 +59,7 @@ module chromesandbox {
     sendCommand(command: ICommand, callback?: (any) => any) {
       if (!this._event) throw "chrome-sandbox not initialized";
       command.id = nextID();
+      console.log("send command, %o",command);
       this._event.source.postMessage(command, this._event.origin);
       this._callbacks[command.id] = callback;
     }
@@ -86,6 +87,7 @@ module chromesandbox {
     }
     
     send(arg:any, type:string):ng.IPromise<any>{
+      
        var deferred = this.$q.defer();
       this.onInit(() =>
         this.sendCommand(

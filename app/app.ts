@@ -27,10 +27,11 @@ module app {
             $mdThemingProvider.theme('group')
                 .primaryPalette('teal')
                 .accentPalette('pink');
-
+            
             document.getElementById("content-wrapper").style.display = "block";
             document.getElementById("loader-wrapper").style.display = "none";
-        });
+            
+        });        
 }
 
 

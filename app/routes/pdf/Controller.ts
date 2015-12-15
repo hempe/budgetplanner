@@ -51,7 +51,6 @@ module app.routes.pdf {
 			
 			console.log(data);
 			ele.attr('src', data);
-			ele.attr('download',"Stuff DL");
 			
 			document.getElementById("content-wrapper").style.display = "block";
             document.getElementById("loader-wrapper").style.display = "none";

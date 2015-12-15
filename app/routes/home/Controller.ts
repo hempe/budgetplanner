@@ -39,7 +39,7 @@ module app.routes.home {
 			private headerService: app.services.IHeaderService
 		) {
 			
-			var developmentChart = new development.DevelopmentChartFactory(businessService.file());
+			var developmentChart = new app.components.DevelopmentChartFactory(businessService.file());
 			
 			$scope.options = {
 				animation: true,

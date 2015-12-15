@@ -173,7 +173,7 @@ module app.services {
 
 		private development(doc, file): void {
 
-			var dv = new routes.development.DevelopmentChartFactory(file);
+			var dv = new components.DevelopmentChartFactory(file);
 
 			var d = dv.budgetTotals();
 			console.log(d);

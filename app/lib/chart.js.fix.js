@@ -786,8 +786,12 @@
 			}
 		},
 		//-- Canvas methods
-		clear = helpers.clear = function(chart){
+		clear = helpers.clear = function(chart, options){
 			chart.ctx.clearRect(0,0,chart.width,chart.height);
+			if(options.background !== undefined && options.background !== ""){
+				chart.ctx.fillStyle = options.background;
+				chart.ctx.fillRect(0, 0, chart.width, chart.height);
+			}
 		},
 		fontString = helpers.fontString = function(pixelSize,fontStyle,fontFamily){
 			return fontStyle + " " + pixelSize+"px " + fontFamily;
@@ -839,7 +843,7 @@
 	extend(Chart.Type.prototype,{
 		initialize : function(){return this;},
 		clear : function(){
-			clear(this.chart);
+			clear(this.chart, this.options);
 			return this;
 		},
 		stop : function(){

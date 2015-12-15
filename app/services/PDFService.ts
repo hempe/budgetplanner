@@ -30,6 +30,7 @@ module app.services {
 			scaleGridLineColor: "rgba(66,66,66,0.1)",
 			scaleLineColor: "rgba(66,66,66,0.8)",
 			scaleFontColor: "rgba(66,66,66,0.8)",
+			background:"white",
 			//barDatasetSpacing: 50,
 			//barValueSpacing: 50,
 			scaleLabel: (valuePayload) => Number(valuePayload.value).formatMoney(0),
@@ -43,6 +44,7 @@ module app.services {
 			scaleGridLineColor: "rgba(66,66,66,0.1)",
 			scaleLineColor: "rgba(66,66,66,0.8)",
 			scaleFontColor: "rgba(66,66,66,0.8)",
+			background:"white",
 			scaleLabel: (valuePayload) => Number(valuePayload.value).formatMoney(0),
 		};
 		
@@ -195,8 +197,13 @@ module app.services {
 			var last = 0;
 
 
-			var imgData = new Chart((<any>document.getElementById('canvas')).getContext('2d')).Bar(this.toDataset(dv.budgetTotals()), this.optionsDevelopment).toBase64Image();
-			doc.addImage(imgData, 'PNG',
+			var canvas : any = document.getElementById('canvas') ;
+			var ctx = canvas.getContext('2d');
+			var canvasChart =  new Chart(ctx).Bar(this.toDataset(dv.budgetTotals()), this.optionsDevelopment)
+			var imgData = canvas.toDataURL("image/jpeg", 1);
+			//var imgData = canvasChart.toBase64Image();
+			
+			doc.addImage(imgData, 'JPEG',
 				this.marginLeft,
 				this.marginTop + this.rowHeight * 2,
 				doc.internal.pageSize.width - this.marginLeft * 2,
@@ -316,9 +323,13 @@ module app.services {
 				chartData.data[0].push(u.Total());
 			});
 
-
-			var imgData = new Chart((<any>document.getElementById('canvas')).getContext('2d')).Bar(this.toDataset(chartData), this.options).toBase64Image();
-			doc.addImage(imgData, 'PNG',
+			var canvas : any = document.getElementById('canvas') ;
+			var ctx = canvas.getContext('2d');
+			var canvasChart = new Chart(ctx).Bar(this.toDataset(chartData), this.options);
+			var imgData = canvas.toDataURL("image/jpeg", 1);
+			//var imgData = canvasChart.toBase64Image();
+			
+			doc.addImage(imgData, 'JPEG',
 				this.marginLeft,
 				this.marginTop + this.rowHeight * 2,
 				doc.internal.pageSize.width - this.marginLeft * 2,

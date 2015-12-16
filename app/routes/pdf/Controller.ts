@@ -36,8 +36,7 @@ module app.routes.pdf {
 			headerService: app.services.IHeaderService,
 			pdfService: app.services.IPDFService) {
 
-			document.getElementById("content-wrapper").style.display = "none";
-            document.getElementById("loader-wrapper").style.display = "block";
+			app.setLoader(true);
 			
 			$timeout(()=>{
 			headerService.title = "PDF";
@@ -52,8 +51,7 @@ module app.routes.pdf {
 			console.log(data);
 			ele.attr('src', data);
 			
-			document.getElementById("content-wrapper").style.display = "block";
-            document.getElementById("loader-wrapper").style.display = "none";
+			app.setLoader(false);
 			},0);
 		}
 	}

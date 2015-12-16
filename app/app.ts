@@ -27,16 +27,24 @@ module app {
             $mdThemingProvider.theme('group')
                 .primaryPalette('teal')
                 .accentPalette('pink');
-            
-            document.getElementById("content-wrapper").style.display = "block";
-            document.getElementById("loader-wrapper").style.display = "none";
-            
-        });        
+                setLoader(false);
+        });
+}
+
+export function setLoader(loaderShowing: boolean) {
+    if (loaderShowing) {
+        document.getElementById("content-wrapper").style.display = "block";
+        document.getElementById("loader-wrapper").style.display = "none";
+    }
+    else {
+        document.getElementById("content-wrapper").style.display = "none";
+        document.getElementById("loader-wrapper").style.display = "block";
+    }
 }
 
 
 function watchers() {
-    
+
     var root = angular.element(document.getElementById('content-wrapper'));
 
     var watchers = [];
@@ -66,5 +74,5 @@ function watchers() {
     });
 
     console.log(watchersWithoutDuplicates.length);
-    
+
 };

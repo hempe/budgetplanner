@@ -24,30 +24,30 @@
 			<div>
 				<md-menu md-position-mode="target-right target">
 
-					<md-button aria-label="delete menu" class="header-menu-icon md-icon-button" ng-click="$mdOpenMenu($event)">
+					<md-button aria-label="menu" class="header-menu-icon md-icon-button" ng-click="$mdOpenMenu($event)">
 						<ng-md-icon icon="more_vert" style="fill:grey;"></ng-md-icon>
 					</md-button>
 					<md-menu-content width="4">
 						<md-menu-item>
-							<md-button ng-click="budgets.add();" class="md-icon-small-menu-indent">
+							<md-button ng-click="add();" class="md-icon-small-menu-indent">
 								<ng-md-icon icon="new_releases" style="fill:grey;"></ng-md-icon>
 								<span>Leer</span>
 							</md-button>
 						</md-menu-item>
 						<md-menu-item>
-							<md-button ng-click="budgets.add(current);" class="md-icon-small-menu-indent">
+							<md-button ng-click="add(current);" class="md-icon-small-menu-indent">
 								<ng-md-icon icon="my_library_add" style="fill:grey;"></ng-md-icon>
 								<span>Aktuelles Budget kopieren</span>
 							</md-button>
 						</md-menu-item>
 						<md-menu-item>
-							<md-button ng-click="budgets.remove(current);" class="md-icon-small-menu-indent">
+							<md-button ng-click="remove(current);" class="md-icon-small-menu-indent">
 								<ng-md-icon icon="delete" style="fill:grey;"></ng-md-icon>
 								<span>Aktuelles Budget l&ouml;schen</span>
 							</md-button>
 						</md-menu-item>
 						<md-menu-item>
-							<md-button ng-click="budgets.add();" class="md-icon-small-menu-indent">
+							<md-button ng-click="add();" class="md-icon-small-menu-indent">
 								<ng-md-icon icon="my_library_books" style="fill:grey;"></ng-md-icon>
 								<span>Vorlage</span>
 							</md-button>

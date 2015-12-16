@@ -9,7 +9,7 @@
 <body>
     <div ng-app="app" style="height:100vh">
         <div id="content-wrapper">
-        <section ng-controller="AppController" layout="row" flex>
+        <div ng-controller="AppController" layout="row" flex>
             <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')  && lockSideMenu">
                 <!-- md-is-locked-open="$mdMedia('gt-md')">-->
                 <div style="background-size: cover; height:9em;padding:1em 1em; background:url('./images/wallpaper.png') rgb(33,150,243);">
@@ -80,12 +80,12 @@
                     </div>
                 </md-toolbar>
 
-                <md-content style="height:100%">
+                <md-content class="view-container">
                     <div ng-view style="padding:0;"></div>
                 </md-content>
             </md-content>
             
-        </section>
+        </div>
         </div>
         
         <div id="loader-wrapper">
@@ -106,7 +106,7 @@
         <script src="js/app.js"></script>
     </div>
     
-    <!--<canvas id="canvas" style="width:1000px; height:500px;position: absolute;top: 0;left: -1000px;background-color:white"></canvas>-->
+    <canvas id="canvas" style="width:1000px; height:500px;position: absolute;top: 0;left: -1000px;background-color:white"></canvas>
 </body>
 
 </html>

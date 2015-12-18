@@ -8,7 +8,7 @@ module app.services {
         open(file: { name: string, data: string }): void;
         openChromeFile(): void;
         saveChromeFile(): void;
-        openChromePdf(pdf):void;
+        openChromePdf(pdf): void;
     }
 
     class BusinessService implements IBusinessService {
@@ -23,8 +23,8 @@ module app.services {
             this.$rootScope.file = components.Files.OpenFile(file);
             this.$route.reload();
         };
-        
-        public openChromePdf(pdf){
+
+        public openChromePdf(pdf) {
             this.chrome.pdf.show(pdf);
         }
 
@@ -49,7 +49,7 @@ module app.services {
         };
 
         private _initalize() {
-            this.storageService.read("file").then(file=>{
+            this.storageService.read("file").then(file=> {
                 if (file == undefined || file == "") {
                     console.info("No file in local Storage");
                     return;
@@ -67,7 +67,7 @@ module app.services {
             '$route',
             '$translate',
             'app.services.IStorageService',
-            'Chronicle',
+            'simple-history',
             'chrome-sandbox'
         ];
         constructor(
@@ -75,32 +75,31 @@ module app.services {
             private $route: any,
             private $translate: ng.translate.ITranslateService,
             private storageService: app.services.IStorageService,
-            private Chronicle: any|angular.chronicle.IChronicle,
+            private history: simpleHistory.ISimpleHistory,
             private chrome: chromesandbox.IChrome) {
 
             $rootScope.file = components.Files.CreateNew();
             this._initalize();
-            
-            $rootScope.$watch('file.language',()=>{
-                console.log("setting language %o",$rootScope.file.language);
+
+            $rootScope.$watch('file.language', () => {
+                console.log("setting language %o", $rootScope.file.language);
                 $translate.use($rootScope.file.language);
             });
-            
 
-            $rootScope.chronicle = Chronicle.record($rootScope);
-            
-            $rootScope.chronicle.watch('file.budgets')
-                                .watch('file.assets')
-                                .watch('file.revenue')
-                                .watch('file.client')
-                                .watch('file.language');
-            
-            $rootScope.chronicle.addOnAdjustFunction(() => {
+            history.maxLength = 100;
+            history.watch($rootScope, 'file.development', 1000);
+            history.watch($rootScope, 'file.budgets');
+            history.watch($rootScope, 'file.assets')
+            history.watch($rootScope, 'file.revenue')
+            history.watch($rootScope, 'file.client', 1000);
+            history.watch($rootScope, 'file.language');
+
+            history.addOnAdjustFunction(() => {
                 console.log("I hate you");
                 this.writeToLocalStorage();
             });
 
-            $rootScope.chronicle.addOnUndoFunction(() => {
+            history.addOnUndoFunction(() => {
             });
         }
     }

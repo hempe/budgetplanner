@@ -36,6 +36,7 @@ module app {
 			'$location',
 			'$mdSidenav',
 			'$translate',
+			'simple-history',
 			'app.services.IHeaderService',
 			'app.services.IBusinessService',
 			'app.services.IPDFService',
@@ -48,19 +49,20 @@ module app {
 			private $location: ng.ILocationService,
 			private $mdSidenav: any,
 			private $translate: ng.translate.ITranslateProvider,
+			private history: simpleHistory.ISimpleHistory,
 			private headerService: app.services.IHeaderService,
 			private businessService: app.services.IBusinessService,
 			private pdfService: app.services.IPDFService,
 			private storageService: app.services.IStorageService
 		) {
-			var chronicle = <angular.chronicle.IWatch>($rootScope.chronicle);
+
 			$scope.undo = () => {
 				console.log("undoo");
-				chronicle.undo();
+				history.undo();
 			}
-			$scope.redo = () => chronicle.redo();
-			$scope.canRedo = () => chronicle.canRedo();
-			$scope.canUndo = () => chronicle.canUndo();
+			$scope.redo = () => history.redo();
+			$scope.canRedo = () => history.canRedo();
+			$scope.canUndo = () => history.canUndo();
 			$scope.isChromeApp = window != window.top;
 			
 			storageService.read("lockSideMenu").then(lock=>{

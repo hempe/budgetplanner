@@ -5,12 +5,12 @@ module app {
 
     export function setLoader(loaderShowing: boolean) {
         if (loaderShowing) {
-            document.getElementById("content-wrapper").style.display = "block";
-            document.getElementById("loader-wrapper").style.display = "none";
-        }
-        else {
             document.getElementById("content-wrapper").style.display = "none";
             document.getElementById("loader-wrapper").style.display = "block";
+        }
+        else {
+            document.getElementById("content-wrapper").style.display = "block";
+            document.getElementById("loader-wrapper").style.display = "none";
         }
     }
 
@@ -21,7 +21,7 @@ module app {
             'ngMaterial',
             'pascalprecht.translate',
             'angular-sortable-view',
-            'Chronicle',
+            'simple-history',
             'chart.js',
             'chrome-sandbox'
         ], ($provide) => {

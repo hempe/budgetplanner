@@ -14,6 +14,7 @@ module app.routes.development {
 		assets: number;
 		options: any;
 		colors: any[];
+		remove(e);
 	}
 	
 	export class Controller {
@@ -42,7 +43,10 @@ module app.routes.development {
 			var chartDate = new components.DevelopmentChartFactory(file);
 			$scope.budgetTotals = () => { return chartDate.budgetTotals() };
 
-
+			$scope.remove = (e) => {
+				if($scope.development.elements.length > 1) $scope.development.elements.remove(e)
+			}
+			
 			$scope.options = {
 				animation: false,
 				scaleBeginAtZero: false,
